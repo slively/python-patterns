@@ -198,32 +198,35 @@ The datastore is sqlite using `:memory:` mode by default.
     - a process that watches a directory for changes
       - prints the changes to stdout with a logger
       - outputs metrics for changes
-    - how to run a long running 'worker'
-      - write worker_util BaseWorker together
-    - dependency injection
+    - first implementation is 'bad'
+    - second implementation:
+      - externalize configuration (loop delay)
+      - create the directory model
+        - write models tests
+      - split out the directory api
+        - write api tests
+      - update worker tests to use a mock api for simplicity
+      - can now create a cli
+      - logging & metrics is vastly improved
+        - statsd: nc -lu 8125
+        - json logs: nc -l 5170 
+    - add another worker that listens to events and synchronizes files
+      - on each file change event reflects the change in another directory
+      - write worker_utils BaseWorker
+      - shares a message queue with the other worker
+        - is the message queue some api or just share the queue directly?
+      - main.py has to launch two workers now
+     
+  - directory sync web service
+    - http POST directory changes
+      - writes all changes to local directory
+    - web page to view the directory and its contents
+    - http client implementation that implements the same interface as the ctrl
+    - cli to web server to simulate events
+    - update directory watcher to no longer depend on a queue, but an api
+      - one api is a local in process queue and worker
+      - other api is an http client to the web server
+      - configuration for embedded project to sync local vs remote
     - tests
-    - have an example of dir_reader_worker that looks bad and why is it bad?
-
-  - directory watcher v2
-    - on new file, push FileModel to a queue
-    - directory mirror worker, that on every change reflects it in another directory
-      - synchronized queue for file changes
-      - launching 2 workers that have a shared dependency
-      - maybe consider creating interface for the queue? could be http or in process?
-      - 
-
-
-  - multiple workers can coordinate in multiple ways:
-    - a queue for notifications, messages, and command passing
-    - in memory storage api (counter, the current state of something, etc...)
-    - files on the file system (move a file to a folder)
-
-  - serial   
-      - synchronization across workers
-      - cli
-      - logging & metrics
-        - statsd nc -lu 8125
-        - json logs nc -l 5170 
-
-- synchornized queues and message passing between workers? good for buffering serial messages in python vs in the rx port
-- 
+      - ctrl
+      - functional (whole web server) that uses the http client
