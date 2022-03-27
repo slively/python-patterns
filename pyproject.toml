@@ -8,11 +8,14 @@ packages = [
 ]
 
 [tool.poetry.scripts]
+format = "src.build:format"
 lint = "src.build:lint"
 typecheck = "src.build:typecheck"
 test = "src.build:test"
+test_single = "src.build:test_single"
 build = "src.build:build"
-worker = "src.embedded_project.main.worker.main:run"
+bad_worker = "src.embedded_project.main.main:bad_run"
+worker = "src.embedded_project.main.main:run"
 cli = "src.embedded_project.main.cli.main:run"
 web = "src.web.main.web:run"
 web-cli = "src.web.main.cli:run"

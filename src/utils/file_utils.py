@@ -12,7 +12,7 @@ def get_all_files_in_dir(target_dir: str) -> list:
 
 
 def get_md5_of_file(filepath: str) -> str:
-    with open(filepath, 'rb') as file_to_check:
+    with open(filepath, "rb") as file_to_check:
         # read contents of the file
         data = file_to_check.read()
         # pipe contents of the file through

@@ -10,5 +10,5 @@ class ListCommand(BaseCliCommand):
 
     def run(self, args: argparse.Namespace) -> None:
         dir_reader = DirReaderCtrl(args.dir)
-        for file in dir_reader.read_files():
+        for file in dir_reader.read_directory():
             print(file)

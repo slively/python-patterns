@@ -1,15 +1,14 @@
 from abc import abstractmethod
-from typing import List
-
-from src.embedded_project.main.dir_reader.file_model import FileModel
+from src.embedded_project.main.dir_reader.directory_model import DirectoryModel
 
 
 class DirReaderApi:
     """
     Base interface for the directory reader api.
     """
+
     @abstractmethod
-    def read_files(self) -> List[FileModel]:
+    def read_directory(self) -> DirectoryModel:
         """
         Returns all files within the provided directory.
         """

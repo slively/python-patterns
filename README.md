@@ -2,11 +2,11 @@
 
 This repo contains two projects as examples. 
 The [first](./src/embedded_project) is meant to mimics an embedded system on a chip project.
-The [second][./src/web_project] is meant to mimic a web-server based project. 
+The [second](./src/web_project) is meant to mimic a web-server based project. 
 
 ## Glossary of Terms
 
-**Depenency** Generally used in two contexts. When getting a library from the internet (see poetry & pip) to use in your own application, it's generally referred to as installing and using a 'third party dependency'. That is, the application 'depends on' code from third party. The second context is within a single application, it refers to when one part of the software 'depends on' some other part of the software in order to function (see Dependency Injection). For example a Python class that handls http requests, may depend on a Python class that queries a database.
+**Depenency** Generally used in two contexts. When getting a library from the internet (see poetry & pip) to use in your own application, it's generally referred to as installing and using a 'third party dependency'. That is, the application 'depends on' code from third party. The second context is within a single application, it refers to when one part of the software 'depends on' some other part of the software in order to function (see Dependency Injection). For example a Python class that handles http requests, may depend on a Python class that queries a database.
 
 **Dependency Injection** A [very common](https://en.wikipedia.org/wiki/Dependency_injection) software engineering pattern meant to reduce [coupling](https://en.wikipedia.org/wiki/Coupling_(computer_programming) of software components. Also see 'Externalized Configuration'.
 
@@ -53,6 +53,70 @@ class MyClass:
 **flake8** A linter for Python that verifies source code adheres to the PEP8 standard.
 
 **Static Type Checker** Python in particular is an [interpreted](https://en.wikipedia.org/wiki/Interpreter_(computing) language as opposed to a [compiled](https://en.wikipedia.org/wiki/Compiler) language. Python is also [dynamically typed](https://en.wikipedia.org/wiki/Dynamic_programming_language) vs [statically typed](https://en.wikipedia.org/wiki/Type_system#Static_type_checking), but there is now a package in the Python called `typings` that allows for [type annotations](https://en.wikipedia.org/wiki/Type_signature). __A static type checker is a program that can be run against source code that will check the type annotations in the code to ensure they are correct.__ When running a Python program, these type annotations are completely ignored by the interpreter just like comments. Lots of other languages like Java and C++ have the static type checker built into the compiler. Another similar Python typings is [Typescript](https://www.typescriptlang.org/) which is Javascript + type annotations. It has a compiler that does all static type checking, then removes all type annotations, and finally writes standard javascript files.
+
+## [Domain Driven Design](https://en.wikipedia.org/wiki/Domain-driven_design) 
+
+An approach to writing software that emphasizes modeling business 'domains' and centralizing logic into domain 'models'. This discipline establishes lots of terms and can definitely be complicated. Like all design 'philosophies' it requires using good judgement as to how much or little it should or could be used. For the purposes of these examples the primary focosu is on centralizing business logic into core model classes that have no other dependencies. This approach makes greatly improves testing, discovering core business, and understanding the relationship of models which are very important things to get right in any large project. [Domain-Driven Design: Tackling Complexity in the Heart of Software](https://www.amazon.com/gp/product/0321125215/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1) is a good *reference book* for terms and approaches, but is quite dry to attempt to work through entirely.
+
+This is a common depiction of 'centering the domain model', where the core logic and code exists on a model, then things like 'services' or 'controllers' interact with the models , 'presenters' or 'views' transform those models into something for a user to see, and finally 'infrastructure' is how the application is deployed.
+
+![domain driven design architecture](./docs/ddd.png)
+
+### Model
+
+A model should be a [simple class](https://pydantic-docs.helpmanual.io/usage/models/) that contains all of the properties and methods to interact with a 'domain model'. One way to think of how to create a good model, is to make sure the user of it knows what information they have access to, how it related to other models, and what are the safe ways to change the model.
+
+A simple exmaple could be a `TodoModel` that related to a `UserModel`. A `todo` is created by a user, and can optionally be assigned to a user.
+
+```python
+class UserModel(BaseModel):
+  id: int
+  name: str
+
+class TodoModel(BaseModel):
+  id: int
+  text: str
+  created_by: UserModel
+  assigned_to: Optional[UserModel]
+```
+
+The user that created the todo should never be changed after it's created, but the assignment can change whenever necessary. So the api for creating a `todo` should require the creating user and not be update-able.
+There are also times when creating or updating a model requires a lot more validation of the relationship of models. 
+In this contrived example we could consider users with the name "alec" to not allow to create tasks, and users with the name 
+"scott" not allowed to be assigned tasks:
+
+```python
+class TodoModel(BaseModel):
+  id: int = Field(allow_mutation=False)  # cannot change after creation
+  text: str
+  created_by: UserModel = Field(allow_mutation=False)  # cannot change after creation
+  assigned_to: Optional[UserModel]
+
+  @validate('created_by')
+  def validate_created_by(cls, v: UserModel):
+    if v.name == 'alec:
+      raise ValueError('No way Alec.')
+    return v
+
+  @validate('assigned_to')
+  def validate_created_by(cls, v: UserModel):
+    if v.name == 'scott:
+      raise ValueError('No way Scott.')
+    return v
+
+  class Config:
+    validate_assignment = True  # validate on creation and when mutating fields
+
+scott = UserModel(id = 1, name = "scott")
+alec = UserModel(id = 2, name = "alec")
+my_todo = TodoModel(id=1, created_by=scott, text="stuff")
+my_todo.text "changed stuff"
+my_todo.assigned_to = alec  # validator ran here
+```
+
+As relationships and logic gets more complicated update properties may need to be done via methods instead of direct 
+assignment. For instance 
+
 
 ## Structure
 
@@ -109,3 +173,57 @@ The tech stack of the web project is:
     - http client: requests
 
 The datastore is sqlite using `:memory:` mode by default.
+
+
+
+# TODO Nodes
+
+- Order of the lesson?
+  - folder structure
+    - top level folder = project
+      - utils top level shared code
+    - main = production source code
+    - test = test code / mocks
+  - build & dependencies & tools
+    - why poetry?
+      - pip + requirements.txt + venv + build script + task runner + ...
+    - how to use poetry
+      - poetry shell
+      - poetry add dependency
+      - poetry add -D dependency
+      - poetry install
+      - poetry update
+  
+  - directory watcher
+    - a process that watches a directory for changes
+      - prints the changes to stdout with a logger
+      - outputs metrics for changes
+    - how to run a long running 'worker'
+      - write worker_util BaseWorker together
+    - dependency injection
+    - tests
+    - have an example of dir_reader_worker that looks bad and why is it bad?
+
+  - directory watcher v2
+    - on new file, push FileModel to a queue
+    - directory mirror worker, that on every change reflects it in another directory
+      - synchronized queue for file changes
+      - launching 2 workers that have a shared dependency
+      - maybe consider creating interface for the queue? could be http or in process?
+      - 
+
+
+  - multiple workers can coordinate in multiple ways:
+    - a queue for notifications, messages, and command passing
+    - in memory storage api (counter, the current state of something, etc...)
+    - files on the file system (move a file to a folder)
+
+  - serial   
+      - synchronization across workers
+      - cli
+      - logging & metrics
+        - statsd nc -lu 8125
+        - json logs nc -l 5170 
+
+- synchornized queues and message passing between workers? good for buffering serial messages in python vs in the rx port
+- 

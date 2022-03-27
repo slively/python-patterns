@@ -30,7 +30,7 @@ class DirReaderCtrlTest(TestCase):
         ctrl = DirReaderCtrl(self.tmp_dir)
 
         # only the parent directory to start
-        self.assertEqual(1, len(ctrl.read_files()))
+        self.assertEqual(1, len(ctrl.read_directory().files))
 
         # add a file and a dir with a file
         first_contents = "first file contents"
@@ -39,7 +39,7 @@ class DirReaderCtrlTest(TestCase):
         self._write_file("child/second.txt", second_contents)
 
         # 2 files and a folder
-        files = ctrl.read_files()
+        files = ctrl.read_directory().files
         self.assertEqual(4, len(files))
         self.assertEqual(
             FileModel(
@@ -81,13 +81,12 @@ class DirReaderCtrlTest(TestCase):
     def test_reset_deletes_and_remakes_dir(self) -> None:
         ctrl = DirReaderCtrl(self.tmp_dir)
 
-
         self._write_file("nothing.txt", "")
 
         # file was created
-        self.assertEqual(2, len(ctrl.read_files()))
-        
+        self.assertEqual(2, len(ctrl.read_directory().files))
+
         ctrl.reset()
 
         # file is gone
-        self.assertEqual(1, len(ctrl.read_files()))
+        self.assertEqual(1, len(ctrl.read_directory().files))

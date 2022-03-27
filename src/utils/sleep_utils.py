@@ -1,10 +1,11 @@
-
 from time import sleep, time
 from typing import Callable
 from xmlrpc.client import Boolean
 
 
-def sleep_until(predicate: Callable[[], Boolean], timeout: int = 10, period: float = 0.1) -> None:
+def sleep_until(
+    predicate: Callable[[], Boolean], timeout: int = 10, period: float = 0.1
+) -> None:
     """
     Sleep the current thread until predicate returns true.
     Will check the predicate every period seconds until timeout seconds is reached after which an exception is thrown.

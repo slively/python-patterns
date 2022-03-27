@@ -1,0 +1,62 @@
+from logging import getLogger
+from time import sleep
+from typing import Optional
+
+from src.embedded_project.main.dir_reader.dir_reader_api import DirReaderApi
+from src.embedded_project.main.dir_reader.directory_model import DirectoryModel
+from src.utils.statsd_utils import statsd
+from src.utils.worker_utils import BaseWorker
+
+log = getLogger(__name__)
+
+
+class DirReaderWorker(BaseWorker):
+    """
+    A worker that continuously checks the DirReaderApi to detect new files or file changes.
+    """
+
+    _current_directory_model: DirectoryModel
+    new_file_count = 0
+    deleted_file_count = 0
+    changed_file_count = 0
+
+    def __init__(
+        self,
+        stop_timeout_seconds: Optional[float],
+        loop_delay_seconds: float,
+        api: DirReaderApi,
+    ) -> None:
+        super().__init__(stop_timeout_seconds)
+        self.loop_delay_seconds = loop_delay_seconds
+        self.api = api
+
+    def run(self) -> None:
+        """
+        Polls the DirReaderApi in a loop while tracking and logging any changes.
+        """
+        # initial state of the directory
+        self._current_directory_model = self.api.read_directory()
+
+        while self.running:
+            sleep(self.loop_delay_seconds)
+            new_directory_model = self.api.read_directory()
+            changes = self._current_directory_model.diff(new_directory_model)
+
+            if changes.changes_detected:
+                if len(changes.deleted_files) > 0:
+                    self.deleted_file_count += 1
+                    log.info("Files deleted: %s", ", ".join(map(lambda f: str(f), changes.deleted_files)))
+
+                if len(changes.new_files) > 0:
+                    self.new_file_count += 1
+                    log.info("Files created: %s", ", ".join(map(lambda f: str(f), changes.new_files)))
+
+                if len(changes.changed_files) > 0:
+                    self.changed_file_count += 1
+                    log.info("Files changed: %s", ", ".join(map(lambda f: str(f), changes.changed_files)))
+            else:
+                log.info("No changes detected.")
+
+            statsd.gauge("new_file_count", self.new_file_count)
+            statsd.gauge("changed_file_count", self.changed_file_count)
+            statsd.gauge("deleted_file_count", self.deleted_file_count)
