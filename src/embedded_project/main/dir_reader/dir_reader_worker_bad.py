@@ -29,7 +29,7 @@ class BadDirReaderWorker(BaseWorker):
     def start(self) -> None:
         log.info("Starting worker %s", self.__class__.__name__)
         self.running = True
-        self._thread = Thread(target=self.run)
+        self._thread = Thread(target=self._run)
         self._thread.start()
 
     def stop(self) -> None:
@@ -41,31 +41,10 @@ class BadDirReaderWorker(BaseWorker):
     def _current_files_by_path(self) -> Dict[str, FileModel]:
         return {file.path: file for file in self._current_files}
 
-    def read_files(self) -> List[FileModel]:
-        files = []
-        paths = glob(self.dir + "/**", recursive=True)
-
-        for p in paths:
-            if os.path.isdir(p):
-                files.append(
-                    FileModel(path=p, name=basename(p), contents="", is_dir=True)
-                )
-            else:
-                with open(p, mode="r") as f:
-                    files.append(
-                        FileModel(
-                            path=p,
-                            name=basename(p),
-                            is_dir=False,
-                            contents=f.read(),
-                        )
-                    )
-        return files
-
     def reset(self) -> None:
         clean_and_remake_dir(self.dir)
 
-    def run(self) -> None:
+    def _run(self) -> None:
         """
         Polls the DirReaderApi in a loop while tracking and logging any changes.
         """
@@ -75,20 +54,32 @@ class BadDirReaderWorker(BaseWorker):
             paths = glob(self.dir + "/**", recursive=True)
 
             for p in paths:
-                if os.path.isdir(p):
+                name = basename(p)
+                path_relative_to_root = os.path.relpath(p, self.dir)
+
+                # skip the root dir
+                if path_relative_to_root == ".":
+                    continue
+                elif os.path.isdir(p):
                     files.append(
-                        FileModel(path=p, name=basename(p), contents="", is_dir=True)
+                        FileModel(
+                            path=path_relative_to_root,
+                            name=name,
+                            contents="",
+                            is_dir=True,
+                        )
                     )
                 else:
                     with open(p, mode="r") as f:
                         files.append(
                             FileModel(
-                                path=p,
-                                name=basename(p),
+                                path=path_relative_to_root,
+                                name=name,
                                 is_dir=False,
                                 contents=f.read(),
                             )
                         )
+
             previous_files_by_path = self._current_files_by_path()
             self._current_files = files
             current_files_by_path = self._current_files_by_path()

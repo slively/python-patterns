@@ -3,9 +3,14 @@ from pathlib import Path
 from unittest import TestCase
 from src.embedded_project.main.dir_reader.dir_reader_ctrl import DirReaderCtrl
 from src.embedded_project.main.dir_reader.file_model import FileModel
+from src.embedded_project.tests.test_utils import runIfFileSystem
 from src.utils.file_utils import clean_and_remake_dir
+from src.utils.logger_utils import basic_logging
+
+basic_logging()
 
 
+@runIfFileSystem()
 class DirReaderCtrlTest(TestCase):
 
     tmp_dir = test_working_dir = os.path.join(
@@ -29,8 +34,8 @@ class DirReaderCtrlTest(TestCase):
     def test_correct_detects_changes_in_directory(self) -> None:
         ctrl = DirReaderCtrl(self.tmp_dir)
 
-        # only the parent directory to start
-        self.assertEqual(1, len(ctrl.read_directory().files))
+        # no files yet
+        self.assertEqual(0, len(ctrl.read_directory().files))
 
         # add a file and a dir with a file
         first_contents = "first file contents"
@@ -40,42 +45,33 @@ class DirReaderCtrlTest(TestCase):
 
         # 2 files and a folder
         files = ctrl.read_directory().files
-        self.assertEqual(4, len(files))
+        self.assertEqual(3, len(files))
         self.assertEqual(
             FileModel(
-                name="",
-                path=self.tmp_dir + "/",
-                contents="",
-                is_dir=True,
+                name="first.txt",
+                path="first.txt",
+                contents=first_contents,
+                is_dir=False,
             ),
             files[0],
         )
         self.assertEqual(
             FileModel(
-                name="first.txt",
-                path=os.path.join(self.tmp_dir, "first.txt"),
-                contents=first_contents,
-                is_dir=False,
+                name="child",
+                path="child",
+                contents="",
+                is_dir=True,
             ),
             files[1],
         )
         self.assertEqual(
             FileModel(
-                name="child",
-                path=os.path.join(self.tmp_dir, "child"),
-                contents="",
-                is_dir=True,
-            ),
-            files[2],
-        )
-        self.assertEqual(
-            FileModel(
                 name="second.txt",
-                path=os.path.join(self.tmp_dir, "child", "second.txt"),
+                path=os.path.join("child", "second.txt"),
                 contents=second_contents,
                 is_dir=False,
             ),
-            files[3],
+            files[2],
         )
 
     def test_reset_deletes_and_remakes_dir(self) -> None:
@@ -84,9 +80,9 @@ class DirReaderCtrlTest(TestCase):
         self._write_file("nothing.txt", "")
 
         # file was created
-        self.assertEqual(2, len(ctrl.read_directory().files))
+        self.assertEqual(1, len(ctrl.read_directory().files))
 
         ctrl.reset()
 
         # file is gone
-        self.assertEqual(1, len(ctrl.read_directory().files))
+        self.assertEqual(0, len(ctrl.read_directory().files))

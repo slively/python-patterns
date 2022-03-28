@@ -23,20 +23,32 @@ class DirReaderCtrl(DirReaderApi):
             paths = glob(self.dir + "/**", recursive=True)
 
             for p in paths:
-                if os.path.isdir(p):
+                name = basename(p)
+                path_relative_to_root = os.path.relpath(p, self.dir)
+
+                # skip the root dir
+                if path_relative_to_root == ".":
+                    continue
+                elif os.path.isdir(p):
                     files.append(
-                        FileModel(path=p, name=basename(p), contents="", is_dir=True)
+                        FileModel(
+                            path=path_relative_to_root,
+                            name=name,
+                            contents="",
+                            is_dir=True,
+                        )
                     )
                 else:
                     with open(p, mode="r") as f:
                         files.append(
                             FileModel(
-                                path=p,
-                                name=basename(p),
+                                path=path_relative_to_root,
+                                name=name,
                                 is_dir=False,
                                 contents=f.read(),
                             )
                         )
+
         return DirectoryModel(files=files)
 
     def reset(self) -> None:

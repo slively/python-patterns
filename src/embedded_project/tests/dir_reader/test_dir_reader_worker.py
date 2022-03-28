@@ -4,9 +4,10 @@ from src.embedded_project.main.dir_reader.dir_reader_api import DirReaderApi
 from src.embedded_project.main.dir_reader.directory_model import DirectoryModel
 from src.embedded_project.main.dir_reader.file_model import FileModel
 from src.embedded_project.main.dir_reader.dir_reader_worker import DirReaderWorker
+from src.utils.logger_utils import basic_logging
 from src.utils.sleep_utils import sleep_until
 
-
+basic_logging()
 test_loop_delay_seconds = 0.1
 two_loops = test_loop_delay_seconds * 2
 
@@ -21,6 +22,9 @@ class WorkerTest(TestCase):
             loop_delay_seconds=test_loop_delay_seconds,
             api=api,
         ) as w:
+            # wait until it gets the initial state of the direcotry
+            sleep_until(lambda: len(api.read_directory.mock_calls) > 0)
+
             # no files yet
             self.assertEqual(0, w.new_file_count)
             self.assertEqual(0, w.changed_file_count)

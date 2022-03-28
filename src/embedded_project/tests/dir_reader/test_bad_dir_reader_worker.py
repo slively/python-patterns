@@ -3,6 +3,7 @@ from unittest import TestCase
 from src.embedded_project.main.dir_reader.dir_reader_worker_bad import (
     BadDirReaderWorker,
 )
+from src.embedded_project.tests.test_utils import runIfFileSystem
 from src.utils.file_utils import clean_and_remake_dir
 from src.utils.logger_utils import basic_logging
 from src.utils.sleep_utils import sleep_until
@@ -11,6 +12,7 @@ basic_logging()
 test_dir = os.path.join(os.path.dirname(__file__), "tmp")
 
 
+@runIfFileSystem()
 class WorkerTest(TestCase):
     def setUp(self) -> None:
         clean_and_remake_dir(test_dir)
@@ -19,12 +21,12 @@ class WorkerTest(TestCase):
         w = BadDirReaderWorker(dir=test_dir)
 
         try:
-            w.start()
-
-            # no files yet
+            # not started
             self.assertEqual(0, w.new_file_count)
             self.assertEqual(0, w.changed_file_count)
             self.assertEqual(0, w.deleted_file_count)
+
+            w.start()
 
             # 1 new file shows up with no contents
             first_file = os.path.join(test_dir, "name.txt")

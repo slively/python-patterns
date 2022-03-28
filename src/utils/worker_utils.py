@@ -25,7 +25,7 @@ class BaseWorker:
         self.stop_timeout_seconds = stop_timeout_seconds
 
     @abstractmethod
-    def run(self) -> None:
+    def _run(self) -> None:
         """
         Meant to be implemented by the inherited class and should run an infinite loop as long as
         self.running is True.
@@ -42,7 +42,7 @@ class BaseWorker:
             raise Exception("Called start on worker that is already running.")
 
         self.running = True
-        self._thread = Thread(target=self.run)
+        self._thread = Thread(target=self._run)
         self._thread.start()
 
     def stop(self) -> None:
