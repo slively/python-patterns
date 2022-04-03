@@ -74,7 +74,7 @@ class Worker:
                         )
                     )
 
-            return files
+        return files
 
     def _current_files_by_path(self) -> Dict[str, FileModel]:
         return {file.path: file for file in self._current_files}
