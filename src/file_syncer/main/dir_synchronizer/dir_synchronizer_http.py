@@ -1,5 +1,4 @@
 from logging import getLogger
-import os
 from typing import List
 from pydantic import parse_obj_as
 

@@ -2,7 +2,6 @@ import os
 from src.web_syncer.main.config import get_config
 from src.web_syncer.main.dir_synchronizer.router import files_router
 from fastapi import FastAPI
-from pathlib import Path
 import uvicorn  # type: ignore
 
 
