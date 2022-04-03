@@ -1,10 +1,10 @@
 from logging import getLogger
 from time import sleep
 from typing import Optional
-from src.embedded_project.main.dir_reader.dir_change_event_api import DirChangeEventApi
+from src.file_syncer.main.dir_reader.dir_change_event_api import DirChangeEventApi
 
-from src.embedded_project.main.dir_reader.dir_reader_api import DirReaderApi
-from src.embedded_project.main.dir_reader.directory_model import DirectoryModel
+from src.file_syncer.main.dir_reader.dir_reader_api import DirReaderApi
+from src.file_syncer.main.dir_reader.directory_model import DirectoryModel
 from src.utils.statsd_utils import statsd
 from src.utils.worker_utils import BaseWorker
 

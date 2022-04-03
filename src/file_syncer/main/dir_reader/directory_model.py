@@ -2,7 +2,7 @@ from logging import getLogger
 from typing import Dict, List
 from pydantic import BaseModel
 
-from src.embedded_project.main.dir_reader.file_model import FileModel
+from src.file_syncer.main.dir_reader.file_model import FileModel
 
 
 log = getLogger(__name__)

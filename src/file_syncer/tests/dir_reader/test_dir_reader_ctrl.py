@@ -1,9 +1,9 @@
 import os
 from pathlib import Path
 from unittest import TestCase
-from src.embedded_project.main.dir_reader.dir_reader_ctrl import DirReaderCtrl
-from src.embedded_project.main.dir_reader.file_model import FileModel
-from src.embedded_project.tests.test_utils import runIfFileSystem
+from src.file_syncer.main.dir_reader.dir_reader_ctrl import DirReaderCtrl
+from src.file_syncer.main.dir_reader.file_model import FileModel
+from src.file_syncer.tests.test_utils import runIfFileSystem
 from src.utils.file_utils import clean_and_remake_dir
 from src.utils.logger_utils import basic_logging
 
@@ -14,7 +14,7 @@ basic_logging()
 class DirReaderCtrlTest(TestCase):
 
     tmp_dir = test_working_dir = os.path.join(
-        os.getcwd(), "src", "embedded_project", "tests", "tmp"
+        os.getcwd(), "src", "file_syncer", "tests", "tmp"
     )
 
     def setUp(self) -> None:

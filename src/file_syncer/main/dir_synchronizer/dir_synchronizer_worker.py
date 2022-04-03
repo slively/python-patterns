@@ -2,7 +2,7 @@ from logging import getLogger
 from queue import Queue
 from typing import Optional
 
-from src.embedded_project.main.dir_synchronizer.dir_synchronizer_api import (
+from src.file_syncer.main.dir_synchronizer.dir_synchronizer_api import (
     DirSynchronizerApi,
 )
 from src.utils.worker_utils import BaseWorker

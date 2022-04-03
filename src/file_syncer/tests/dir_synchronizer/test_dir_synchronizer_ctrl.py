@@ -1,5 +1,5 @@
 from unittest import TestCase
-from src.embedded_project.tests.test_utils import runIfFileSystem
+from src.file_syncer.tests.test_utils import runIfFileSystem
 
 
 @runIfFileSystem()

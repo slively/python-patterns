@@ -1,5 +1,5 @@
-from src.embedded_project.main.cli.list_command import ListCommand
-from src.embedded_project.main.cli.reset_command import ResetCommand
+from src.file_syncer.main.cli.list_command import ListCommand
+from src.file_syncer.main.cli.reset_command import ResetCommand
 from src.utils.cli_utils import RootCliCommand
 from src.utils.logger_utils import basic_logging
 

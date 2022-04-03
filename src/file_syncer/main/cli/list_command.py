@@ -1,6 +1,6 @@
 import argparse
-from src.embedded_project.main.dir_reader.dir_reader_ctrl import DirReaderCtrl
-from src.embedded_project.main.utils.common_args import add_dir_arg
+from src.file_syncer.main.dir_reader.dir_reader_ctrl import DirReaderCtrl
+from src.file_syncer.main.utils.common_args import add_dir_arg
 from src.utils.cli_utils import BaseCliCommand
 
 

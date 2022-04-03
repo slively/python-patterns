@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from typing import List
-from src.embedded_project.main.dir_reader.directory_model import DirectoryChangesModel
+from src.file_syncer.main.dir_reader.directory_model import DirectoryChangesModel
 
 
 class DirSynchronizerApi:

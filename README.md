@@ -1,7 +1,7 @@
 # python-patterns
 
 This repo contains two projects as examples. 
-The [first](./src/embedded_project) is meant to mimics an embedded system on a chip project.
+The [first](./src/file_syncer) is meant to mimics an embedded system on a chip project.
 The [second](./src/web_project) is meant to mimic a web-server based project. 
 
 ## Glossary of Terms

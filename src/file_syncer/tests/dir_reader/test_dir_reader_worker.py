@@ -1,9 +1,9 @@
 from unittest import TestCase
 from unittest.mock import create_autospec
-from src.embedded_project.main.dir_reader.dir_reader_api import DirReaderApi
-from src.embedded_project.main.dir_reader.directory_model import DirectoryModel
-from src.embedded_project.main.dir_reader.file_model import FileModel
-from src.embedded_project.main.dir_reader.dir_reader_worker import DirReaderWorker
+from src.file_syncer.main.dir_reader.dir_reader_api import DirReaderApi
+from src.file_syncer.main.dir_reader.directory_model import DirectoryModel
+from src.file_syncer.main.dir_reader.file_model import FileModel
+from src.file_syncer.main.dir_reader.dir_reader_worker import DirReaderWorker
 from src.utils.logger_utils import basic_logging
 from src.utils.sleep_utils import sleep_until
 

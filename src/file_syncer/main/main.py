@@ -1,20 +1,20 @@
 import argparse
 from queue import Queue
 from typing import Any
-from src.embedded_project.main.dir_reader.dir_change_event_api import (
+from src.file_syncer.main.dir_reader.dir_change_event_api import (
     DirChangeEventApi,
     DirChangeEventQueue,
 )
-from src.embedded_project.main.dir_reader.dir_reader_ctrl import DirReaderCtrl
-from src.embedded_project.main.dir_reader.file_model import FileModel
-from src.embedded_project.main.dir_synchronizer.dir_synchronizer_ctrl import (
+from src.file_syncer.main.dir_reader.dir_reader_ctrl import DirReaderCtrl
+from src.file_syncer.main.dir_reader.file_model import FileModel
+from src.file_syncer.main.dir_synchronizer.dir_synchronizer_ctrl import (
     DirSynchronizerCtrl,
 )
-from src.embedded_project.main.dir_synchronizer.dir_synchronizer_worker import (
+from src.file_syncer.main.dir_synchronizer.dir_synchronizer_worker import (
     DirSynchronizerWorker,
 )
-from src.embedded_project.main.utils.common_args import add_dir_arg
-from src.embedded_project.main.dir_reader.dir_reader_worker import DirReaderWorker
+from src.file_syncer.main.utils.common_args import add_dir_arg
+from src.file_syncer.main.dir_reader.dir_reader_worker import DirReaderWorker
 from src.utils.logger_utils import forwarded_logging
 
 forwarded_logging()

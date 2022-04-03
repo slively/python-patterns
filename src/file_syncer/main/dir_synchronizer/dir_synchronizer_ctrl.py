@@ -1,8 +1,8 @@
 from logging import getLogger
 import os
 from typing import List
-from src.embedded_project.main.dir_reader.directory_model import DirectoryChangesModel
-from src.embedded_project.main.dir_synchronizer.dir_synchronizer_api import (
+from src.file_syncer.main.dir_reader.directory_model import DirectoryChangesModel
+from src.file_syncer.main.dir_synchronizer.dir_synchronizer_api import (
     DirSynchronizerApi,
 )
 

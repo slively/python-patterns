@@ -1,6 +1,6 @@
 from unittest import TestCase
-from src.embedded_project.main.dir_reader.directory_model import DirectoryModel
-from src.embedded_project.main.dir_reader.file_model import FileModel
+from src.file_syncer.main.dir_reader.directory_model import DirectoryModel
+from src.file_syncer.main.dir_reader.file_model import FileModel
 
 
 class DirectoryModelTest(TestCase):

@@ -2,9 +2,9 @@ from glob import glob
 import os
 from posixpath import basename
 
-from src.embedded_project.main.dir_reader.dir_reader_api import DirReaderApi
-from src.embedded_project.main.dir_reader.directory_model import DirectoryModel
-from src.embedded_project.main.dir_reader.file_model import FileModel
+from src.file_syncer.main.dir_reader.dir_reader_api import DirReaderApi
+from src.file_syncer.main.dir_reader.directory_model import DirectoryModel
+from src.file_syncer.main.dir_reader.file_model import FileModel
 from src.utils.file_utils import clean_and_remake_dir
 from src.utils.statsd_utils import statsd
 
