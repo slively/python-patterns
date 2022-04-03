@@ -5,7 +5,7 @@ from typing import Optional
 from src.file_syncer.main.dir_synchronizer.dir_synchronizer_api import (
     DirSynchronizerApi,
 )
-from src.utils.worker_utils import BaseWorker
+from src.utils.main.worker_utils import BaseWorker
 
 log = getLogger(__name__)
 

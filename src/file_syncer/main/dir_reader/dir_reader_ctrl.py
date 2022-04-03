@@ -5,8 +5,8 @@ from posixpath import basename
 from src.file_syncer.main.dir_reader.dir_reader_api import DirReaderApi
 from src.file_syncer.main.dir_reader.directory_model import DirectoryModel
 from src.file_syncer.main.dir_reader.file_model import FileModel
-from src.utils.file_utils import clean_and_remake_dir
-from src.utils.statsd_utils import statsd
+from src.utils.main.file_utils import clean_and_remake_dir
+from src.utils.main.statsd_utils import statsd
 
 
 class DirReaderCtrl(DirReaderApi):

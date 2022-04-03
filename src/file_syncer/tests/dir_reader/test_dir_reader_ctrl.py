@@ -4,8 +4,8 @@ from unittest import TestCase
 from src.file_syncer.main.dir_reader.dir_reader_ctrl import DirReaderCtrl
 from src.file_syncer.main.dir_reader.file_model import FileModel
 from src.file_syncer.tests.test_utils import runIfFileSystem
-from src.utils.file_utils import clean_and_remake_dir
-from src.utils.logger_utils import basic_logging
+from src.utils.main.file_utils import clean_and_remake_dir
+from src.utils.main.logger_utils import basic_logging
 
 basic_logging()
 

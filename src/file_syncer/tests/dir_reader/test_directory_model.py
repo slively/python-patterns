@@ -23,11 +23,14 @@ class DirectoryModelTest(TestCase):
 
         third = DirectoryModel(
             files=[
-                FileModel(name="name2.txt", path="name2.txt", is_dir=False, contents=""),
+                FileModel(name="name.txt", path="name.txt", is_dir=False, contents=""),
                 FileModel(
-                    name="name.txt", path="name.txt", is_dir=False, contents=""
+                    name="name2.txt", path="name2.txt", is_dir=False, contents=""
                 ),
             ],
         )
 
-        self.assertEqual(third.files, first.diff(third).new_files)
+        diff = first.diff(third)
+        # sort to ensure the same order
+        diff.new_files.sort(key=lambda f: f.name)
+        self.assertEqual(third.files, diff.new_files)

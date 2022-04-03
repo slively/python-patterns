@@ -1,7 +1,7 @@
 import argparse
 from src.file_syncer.main.dir_reader.dir_reader_ctrl import DirReaderCtrl
 from src.file_syncer.main.utils.common_args import add_dir_arg
-from src.utils.cli_utils import BaseCliCommand
+from src.utils.main.cli_utils import BaseCliCommand
 
 
 class ResetCommand(BaseCliCommand):

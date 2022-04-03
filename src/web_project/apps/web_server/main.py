@@ -1,4 +1,4 @@
-from src.utils.logger_utils import basic_logging
+from src.utils.main.logger_utils import basic_logging
 
 basic_logging()
 

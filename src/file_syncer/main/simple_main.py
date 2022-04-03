@@ -7,8 +7,8 @@ from threading import Thread
 from time import sleep
 from typing import Dict, List, Optional
 from pydantic import BaseModel
-from src.utils.logger_utils import forwarded_logging
-from src.utils.statsd_utils import statsd
+from src.utils.main.logger_utils import forwarded_logging
+from src.utils.main.statsd_utils import statsd
 
 forwarded_logging()
 log = getLogger(__name__)

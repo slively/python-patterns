@@ -1,18 +1,11 @@
 import argparse
-from glob import glob
 from logging import getLogger
-import os
-from posixpath import basename
-from threading import Thread
-from time import sleep
-from typing import Dict, List, Optional
-from pydantic import BaseModel
 from src.file_syncer.main.simple_main import Worker
-from src.utils.logger_utils import basic_logging, forwarded_logging
-from src.utils.statsd_utils import statsd
+from src.utils.main.logger_utils import basic_logging
 
 basic_logging()
 log = getLogger(__name__)
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Example embedded project daemon.")

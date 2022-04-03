@@ -15,7 +15,7 @@ from src.file_syncer.main.dir_synchronizer.dir_synchronizer_worker import (
 )
 from src.file_syncer.main.utils.common_args import add_dir_arg, add_sync_dir_arg
 from src.file_syncer.main.dir_reader.dir_reader_worker import DirReaderWorker
-from src.utils.logger_utils import forwarded_logging
+from src.utils.main.logger_utils import forwarded_logging
 
 forwarded_logging()
 

@@ -5,8 +5,8 @@ from src.file_syncer.main.dir_reader.dir_change_event_api import DirChangeEventA
 
 from src.file_syncer.main.dir_reader.dir_reader_api import DirReaderApi
 from src.file_syncer.main.dir_reader.directory_model import DirectoryModel
-from src.utils.statsd_utils import statsd
-from src.utils.worker_utils import BaseWorker
+from src.utils.main.statsd_utils import statsd
+from src.utils.main.worker_utils import BaseWorker
 
 log = getLogger(__name__)
 

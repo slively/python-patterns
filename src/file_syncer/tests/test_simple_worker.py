@@ -1,9 +1,9 @@
 import os
 from unittest import TestCase
 from src.file_syncer.main.simple_main import Worker
-from src.utils.file_utils import clean_and_remake_dir
-from src.utils.logger_utils import basic_logging
-from src.utils.sleep_utils import sleep_until
+from src.utils.main.file_utils import clean_and_remake_dir
+from src.utils.main.logger_utils import basic_logging
+from src.utils.main.sleep_utils import sleep_until
 
 basic_logging()
 test_dir = os.path.join(os.path.dirname(__file__), "tmp")
