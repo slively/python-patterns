@@ -3,7 +3,8 @@ import os
 from src.file_syncer.main.dir_synchronizer.dir_synchronizer_ctrl import (
     DirSynchronizerCtrl,
 )
-from src.web_syncer.main.directories.router import FilesRouter
+from src.web_syncer.main.config import parse_args
+from src.web_syncer.main.directories.router import files_router
 from fastapi import FastAPI
 from pathlib import Path
 import uvicorn
@@ -12,36 +13,8 @@ import uvicorn
 def create_app(sync_dir: str = "./tmp") -> FastAPI:
     Path(sync_dir).mkdir(parents=True, exist_ok=True)
     app = FastAPI()
-    api = DirSynchronizerCtrl(sync_dir)
-    fr = FilesRouter(api)
-    app.include_router(fr.router)
+    app.include_router(files_router)
     return app
-
-
-def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Run the web server.")
-    parser.add_argument(
-        "--hot_reload", help="activate hot reloading.", action="store_true"
-    )
-    parser.add_argument(
-        "--log_level",
-        help="Level of logging.",
-        default="info",
-        type=str,
-    )
-    parser.add_argument(
-        "--port",
-        help="server port.",
-        default=8080,
-        type=int,
-    )
-    parser.add_argument(
-        "--sync_dir",
-        help="Directory to sync.",
-        type=str,
-        required=True
-    )
-    return parser.parse_args()
 
 
 def run() -> None:
