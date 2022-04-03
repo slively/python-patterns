@@ -6,8 +6,7 @@ from pathlib import Path
 import uvicorn  # type: ignore
 
 
-def create_app(sync_dir: str = "./tmp") -> FastAPI:
-    Path(sync_dir).mkdir(parents=True, exist_ok=True)
+def create_app() -> FastAPI:
     app = FastAPI()
     app.include_router(files_router)
     return app
