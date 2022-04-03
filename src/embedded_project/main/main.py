@@ -6,9 +6,6 @@ from src.embedded_project.main.dir_reader.dir_change_event_api import (
     DirChangeEventQueue,
 )
 from src.embedded_project.main.dir_reader.dir_reader_ctrl import DirReaderCtrl
-from src.embedded_project.main.dir_reader.dir_reader_worker_bad import (
-    BadDirReaderWorker,
-)
 from src.embedded_project.main.dir_reader.file_model import FileModel
 from src.embedded_project.main.dir_synchronizer.dir_synchronizer_ctrl import (
     DirSynchronizerCtrl,
@@ -42,12 +39,6 @@ def parse_args() -> Any:
         type=float,
     )
     return parser.parse_args()
-
-
-def bad_run() -> None:
-    args = parse_args()
-    worker = BadDirReaderWorker(args.dir)
-    worker.start()
 
 
 def run() -> None:

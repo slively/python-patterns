@@ -5,7 +5,7 @@ import os
 from posixpath import basename
 from threading import Thread
 from time import sleep
-from typing import Dict, List
+from typing import Dict, List, Optional
 from pydantic import BaseModel
 from src.utils.logger_utils import forwarded_logging
 from src.utils.statsd_utils import statsd
@@ -27,7 +27,7 @@ class Worker:
     deleted_file_count = 0
     changed_file_count = 0
 
-    def __init__(self, dir: str, sync_dir: str):
+    def __init__(self, dir: str, sync_dir: Optional[str]):
         self.dir = dir
         self.sync_dir = sync_dir
 
@@ -95,14 +95,15 @@ class Worker:
                 self.deleted_file_count += 1
                 log.info("Files deleted: %s", ", ".join(deleted_file_paths))
 
-                for file_path in deleted_file_paths:
-                    full_path = os.path.join(self.sync_dir, file_path)
-                    log.info("Synchronizing delete %s", file_path)
-                    file = previous_files_by_path[file_path]
-                    if file.is_dir:
-                        os.rmdir(full_path)
-                    else:
-                        os.remove(full_path)
+                if self.sync_dir is not None:
+                    for file_path in deleted_file_paths:
+                        full_path = os.path.join(self.sync_dir, file_path)
+                        log.info("Synchronizing delete %s", file_path)
+                        file = previous_files_by_path[file_path]
+                        if file.is_dir:
+                            os.rmdir(full_path)
+                        else:
+                            os.remove(full_path)
 
             new_file_paths = list(current_file_paths - previous_file_paths)
             if len(new_file_paths) > 0:
@@ -118,15 +119,16 @@ class Worker:
                 if previous_content != current_content:
                     changed_file_paths.append(file_path)
 
-            for file_path in new_file_paths + changed_file_paths:
-                full_path = os.path.join(self.sync_dir, file_path)
-                log.info("Synchronizing change %s", file_path)
-                file = current_files_by_path[file_path]
-                if file.is_dir:
-                    os.mkdir(full_path)
-                else:
-                    with open(full_path, "w+") as f:
-                        f.write(file.contents)
+            if self.sync_dir is not None:
+                for file_path in new_file_paths + changed_file_paths:
+                    full_path = os.path.join(self.sync_dir, file_path)
+                    log.info("Synchronizing change %s", file_path)
+                    file = current_files_by_path[file_path]
+                    if file.is_dir:
+                        os.mkdir(full_path)
+                    else:
+                        with open(full_path, "w+") as f:
+                            f.write(file.contents)
 
             if len(changed_file_paths) > 0:
                 change_detected = True
@@ -147,7 +149,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Example embedded project daemon.")
     parser.add_argument("--dir", help="Directory to watch.", required=True)
     parser.add_argument(
-        "--sync_dir", help="Local directory to sync changes to.", required=True
+        "--sync_dir", help="Local directory to sync changes to.", required=False
     )
     return parser.parse_args()
 
