@@ -23,9 +23,9 @@ class DirectoryModelTest(TestCase):
 
         third = DirectoryModel(
             files=[
-                FileModel(name="name.txt", path="name.txt", is_dir=False, contents=""),
+                FileModel(name="name2.txt", path="name2.txt", is_dir=False, contents=""),
                 FileModel(
-                    name="name2.txt", path="name2.txt", is_dir=False, contents=""
+                    name="name.txt", path="name.txt", is_dir=False, contents=""
                 ),
             ],
         )
