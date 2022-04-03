@@ -43,6 +43,39 @@ class Worker:
         if self._thread is not None:
             self._thread.join()
 
+    def list_files(self) -> List[FileModel]:
+        files = []
+        paths = glob(self.dir + "/**", recursive=True)
+
+        for p in paths:
+            name = basename(p)
+            path_relative_to_root = os.path.relpath(p, self.dir)
+
+            # skip the root dir
+            if path_relative_to_root == ".":
+                continue
+            elif os.path.isdir(p):
+                files.append(
+                    FileModel(
+                        path=path_relative_to_root,
+                        name=name,
+                        contents="",
+                        is_dir=True,
+                    )
+                )
+            else:
+                with open(p, mode="r") as f:
+                    files.append(
+                        FileModel(
+                            path=path_relative_to_root,
+                            name=name,
+                            is_dir=False,
+                            contents=f.read(),
+                        )
+                    )
+
+            return files
+
     def _current_files_by_path(self) -> Dict[str, FileModel]:
         return {file.path: file for file in self._current_files}
 
@@ -52,35 +85,7 @@ class Worker:
         """
         while self.running:
             change_detected = False
-            files = []
-            paths = glob(self.dir + "/**", recursive=True)
-
-            for p in paths:
-                name = basename(p)
-                path_relative_to_root = os.path.relpath(p, self.dir)
-
-                # skip the root dir
-                if path_relative_to_root == ".":
-                    continue
-                elif os.path.isdir(p):
-                    files.append(
-                        FileModel(
-                            path=path_relative_to_root,
-                            name=name,
-                            contents="",
-                            is_dir=True,
-                        )
-                    )
-                else:
-                    with open(p, mode="r") as f:
-                        files.append(
-                            FileModel(
-                                path=path_relative_to_root,
-                                name=name,
-                                is_dir=False,
-                                contents=f.read(),
-                            )
-                        )
+            files = self.list_files()
 
             previous_files_by_path = self._current_files_by_path()
             self._current_files = files

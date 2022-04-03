@@ -1,6 +1,6 @@
 import os
 from unittest import TestCase
-from src.file_syncer.main.main_bad import Worker
+from src.file_syncer.main.simple_main import Worker
 from src.utils.file_utils import clean_and_remake_dir
 from src.utils.logger_utils import basic_logging
 from src.utils.sleep_utils import sleep_until
@@ -10,7 +10,7 @@ test_dir = os.path.join(os.path.dirname(__file__), "tmp")
 test_sync_dir = os.path.join(os.path.dirname(__file__), "tmp2")
 
 
-class TestBadWorker(TestCase):
+class TestSimpleWorker(TestCase):
     def setUp(self) -> None:
         clean_and_remake_dir(test_dir)
         clean_and_remake_dir(test_sync_dir)

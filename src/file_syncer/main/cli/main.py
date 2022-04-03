@@ -1,3 +1,4 @@
+from src.file_syncer.main.cli.diff_command import DiffCommand
 from src.file_syncer.main.cli.list_command import ListCommand
 from src.file_syncer.main.cli.reset_command import ResetCommand
 from src.utils.cli_utils import RootCliCommand
@@ -12,6 +13,9 @@ def run() -> None:
         commands=[
             ListCommand(
                 name="list", description="List files currently in the directory."
+            ),
+            DiffCommand(
+                name="diff", description="Diff files between directories."
             ),
             ResetCommand(
                 name="reset", description="Reset files currently in the directory."

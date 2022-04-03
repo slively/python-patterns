@@ -13,7 +13,7 @@ from src.file_syncer.main.dir_synchronizer.dir_synchronizer_ctrl import (
 from src.file_syncer.main.dir_synchronizer.dir_synchronizer_worker import (
     DirSynchronizerWorker,
 )
-from src.file_syncer.main.utils.common_args import add_dir_arg
+from src.file_syncer.main.utils.common_args import add_dir_arg, add_sync_dir_arg
 from src.file_syncer.main.dir_reader.dir_reader_worker import DirReaderWorker
 from src.utils.logger_utils import forwarded_logging
 
@@ -23,9 +23,7 @@ forwarded_logging()
 def parse_args() -> Any:
     parser = argparse.ArgumentParser(description="Example embedded project daemon.")
     add_dir_arg(parser)
-    parser.add_argument(
-        "--sync_dir", help="Local directory to sync changes to.", required=False
-    )
+    add_sync_dir_arg(parser)
     parser.add_argument(
         "--stop_timout",
         help="Number of seconds to wait for workers to exit.",
