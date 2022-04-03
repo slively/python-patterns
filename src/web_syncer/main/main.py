@@ -1,13 +1,9 @@
-import argparse
 import os
-from src.file_syncer.main.dir_synchronizer.dir_synchronizer_ctrl import (
-    DirSynchronizerCtrl,
-)
-from src.web_syncer.main.config import parse_args
-from src.web_syncer.main.directories.router import files_router
+from src.web_syncer.main.config import get_config
+from src.web_syncer.main.dir_synchronizer.router import files_router
 from fastapi import FastAPI
 from pathlib import Path
-import uvicorn
+import uvicorn  # type: ignore
 
 
 def create_app(sync_dir: str = "./tmp") -> FastAPI:
@@ -18,24 +14,16 @@ def create_app(sync_dir: str = "./tmp") -> FastAPI:
 
 
 def run() -> None:
-    args = parse_args()
-    if args.hot_reload:
-        dir_path = os.path.dirname(os.path.realpath(__file__))
-        uvicorn.run(
-            "src.web_syncer.main.main:create_app",
-            host="127.0.0.1",
-            port=args.port,
-            log_level=args.log_level,
-            reload=args.hot_reload,
-            reload_dirs=[dir_path],
-        )
-    else:
-        uvicorn.run(
-            create_app(sync_dir=args.sync_dir),
-            host="127.0.0.1",
-            port=args.port,
-            log_level=args.log_level,
-        )
+    config = get_config()
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    uvicorn.run(
+        "src.web_syncer.main.main:create_app",
+        host="127.0.0.1",
+        port=config.port,
+        log_level=config.log_level,
+        reload=config.hot_reload,
+        reload_dirs=[dir_path],
+    )
 
 
 if __name__ == "__main__":

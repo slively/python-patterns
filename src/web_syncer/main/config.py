@@ -1,14 +1,21 @@
 import argparse
 from typing import Optional
 
+from pydantic import BaseModel
 
-_args: Optional[argparse.Namespace] = None
 
+class Config(BaseModel):
+    hot_reload: bool
+    log_level: str
+    port: int
+    sync_dir: str
 
-def parse_args() -> argparse.Namespace:
-    global _args
-    if _args is not None:
-        return _args
+_config: Optional[Config] = None
+
+def get_config() -> Config:
+    global _config
+    if _config is not None:
+        return _config
 
     parser = argparse.ArgumentParser(description="Run the web server.")
     parser.add_argument(
@@ -29,5 +36,6 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--sync_dir", help="Directory to sync.", type=str, required=True
     )
-    _args = parser.parse_args()
-    return _args
+    args = parser.parse_args()
+    _config = Config.parse_obj(args.__dict__)
+    return _config 
