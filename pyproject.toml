@@ -18,7 +18,7 @@ simple_worker = "src.file_syncer.main.simple_main:run"
 simple_cli = "src.file_syncer.main.simple_cli:run"
 worker = "src.file_syncer.main.main:run"
 cli = "src.file_syncer.main.cli.main:run"
-web = "src.web.main.web:run"
+web = "src.web_syncer.main.main:run"
 web-cli = "src.web.main.cli:run"
 
 [tool.poetry.dependencies]
@@ -28,6 +28,8 @@ statsd = "^3.3.0"
 python-json-logger = "^2.0.2"
 pydantic = "^1.9.0"
 Flask = "^2.0.3"
+fastapi = "^0.75.1"
+uvicorn = "^0.17.6"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.910"

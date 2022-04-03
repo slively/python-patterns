@@ -10,9 +10,9 @@ log = getLogger(__name__)
 
 class DirectoryChangesModel(BaseModel):
     changes_detected: bool
-    new_files: List[FileModel]
-    deleted_files: List[FileModel]
-    changed_files: List[FileModel]
+    new_files: List[FileModel] = []
+    deleted_files: List[FileModel] = []
+    changed_files: List[FileModel] = []
 
 
 class DirectoryModel(BaseModel):
