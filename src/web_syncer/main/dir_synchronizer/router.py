@@ -10,14 +10,14 @@ from src.web_syncer.main.dir_synchronizer.dependencies import get_dir_sync_api
 files_router = APIRouter()
 
 
-@files_router.post("/sync")
+@files_router.post("/api/sync")
 async def dir_sync(
     changes: DirectoryChangesModel, api: DirSynchronizerApi = Depends(get_dir_sync_api)
 ):
     return api.sync(changes)
 
 
-@files_router.get("/changes")
+@files_router.get("/api/changes")
 async def list_changes(
     api: DirSynchronizerApi = Depends(get_dir_sync_api),
 ) -> List[DirectoryChangesModel]:

@@ -1,6 +1,7 @@
 import os
 from src.web_syncer.main.config import get_config
 from src.web_syncer.main.dir_synchronizer.router import files_router
+from src.web_syncer.main.views.router import views_router
 from fastapi import FastAPI
 import uvicorn  # type: ignore
 
@@ -8,6 +9,7 @@ import uvicorn  # type: ignore
 def create_app() -> FastAPI:
     app = FastAPI()
     app.include_router(files_router)
+    app.include_router(views_router)
     return app
 
 

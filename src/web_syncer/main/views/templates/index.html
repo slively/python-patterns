@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-black">
+  <section class="bg-black ">
+    <div class="container px-5 py-12 mx-auto lg:px-20">
+      <div class="flex flex-col flex-wrap pb-6 mb-12 text-white ">
+        <h1 class="mb-12 text-3xl font-mono underline uppercase tracking-widest text-white">
+          Directory Changes
+        </h1>
+      </div>
+      {% for change in changes %}
+      <div
+        class="flex flex-wrap items-end justify-start w-full transition duration-500 ease-in-out transform bg-black border-2 border-gray-600 rounded-lg hover:border-white ">
+        <code class="mb-4 whitespace-pre-line font-mono text-white">
+          {{change}}
+        </code>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+</body>
+
+</html>
