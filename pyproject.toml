@@ -22,7 +22,7 @@ web = "src.web_syncer.main.main:run"
 web-cli = "src.web.main.cli:run"
 
 [tool.poetry.dependencies]
-python = "~3.7"
+python = "~3.8"
 requests = "^2.25.1"
 statsd = "^3.3.0"
 python-json-logger = "^2.0.2"

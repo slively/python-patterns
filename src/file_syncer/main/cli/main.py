@@ -14,9 +14,7 @@ def run() -> None:
             ListCommand(
                 name="list", description="List files currently in the directory."
             ),
-            DiffCommand(
-                name="diff", description="Diff files between directories."
-            ),
+            DiffCommand(name="diff", description="Diff files between directories."),
             ResetCommand(
                 name="reset", description="Reset files currently in the directory."
             ),

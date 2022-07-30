@@ -7,11 +7,15 @@ from src.file_syncer.main.dir_reader.dir_change_event_api import (
 )
 from src.file_syncer.main.dir_reader.dir_reader_ctrl import DirReaderCtrl
 from src.file_syncer.main.dir_reader.file_model import FileModel
-from src.file_syncer.main.dir_synchronizer.dir_synchronizer_api import DirSynchronizerApi
+from src.file_syncer.main.dir_synchronizer.dir_synchronizer_api import (
+    DirSynchronizerApi,
+)
 from src.file_syncer.main.dir_synchronizer.dir_synchronizer_ctrl import (
     DirSynchronizerCtrl,
 )
-from src.file_syncer.main.dir_synchronizer.dir_synchronizer_http import DirSynchronizerHttp
+from src.file_syncer.main.dir_synchronizer.dir_synchronizer_http import (
+    DirSynchronizerHttp,
+)
 from src.file_syncer.main.dir_synchronizer.dir_synchronizer_worker import (
     DirSynchronizerWorker,
 )
@@ -27,10 +31,7 @@ def parse_args() -> Any:
     add_dir_arg(parser)
     add_sync_dir_arg(parser)
     parser.add_argument(
-        "--sync_url",
-        help="Url for remote syncing.",
-        required=False,
-        type=str
+        "--sync_url", help="Url for remote syncing.", required=False, type=str
     )
     parser.add_argument(
         "--stop_timout",

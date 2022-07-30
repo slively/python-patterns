@@ -1,5 +1,13 @@
+import logging
 from subprocess import check_call
 import sys
+import unittest
+
+logging.basicConfig(
+    format="%(asctime)s.%(msecs)03d %(levelname)s {%(module)s} [%(funcName)s] %(message)s",
+    datefmt="%Y-%m-%d,%H:%M:%S",
+    level=logging.DEBUG,
+)
 
 
 def format() -> None:
@@ -17,7 +25,7 @@ def typecheck() -> None:
             "--warn-unused-configs",
             "--show-error-codes",
             "--exclude",
-            "'(.venv|ansible|vendor*)/$'",
+            "(.venv|ansible|vendor*)/$",
             "--config-file",
             "./pyproject.toml",
             "./src",
@@ -25,12 +33,15 @@ def typecheck() -> None:
     )
 
 
-def test() -> None:
-    check_call(["python", "-m", "unittest", "-f"])
+def test(pattern: str = "test*.py") -> None:
+    loader = unittest.TestLoader()
+    tests = loader.discover(".", pattern)
+    test_runner = unittest.runner.TextTestRunner()
+    test_runner.run(tests)
 
 
 def test_single() -> None:
-    check_call(["python", "-m", "unittest", "-f", sys.argv[-1]])
+    test(sys.argv[-1])
 
 
 def build() -> None:

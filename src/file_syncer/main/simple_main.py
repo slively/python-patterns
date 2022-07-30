@@ -22,14 +22,13 @@ class FileModel(BaseModel):
 
 
 class Worker:
-    _current_files: List[FileModel] = []
-    new_file_count = 0
-    deleted_file_count = 0
-    changed_file_count = 0
-
     def __init__(self, dir: str, sync_dir: Optional[str]):
         self.dir = dir
         self.sync_dir = sync_dir
+        self._current_files: List[FileModel] = []
+        self.new_file_count = 0
+        self.deleted_file_count = 0
+        self.changed_file_count = 0
 
     def start(self) -> None:
         log.info("Starting worker %s", self.__class__.__name__)
